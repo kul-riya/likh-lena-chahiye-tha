@@ -3,6 +3,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:likh_lena_chahiye_tha/firebase_options.dart';
 import 'package:likh_lena_chahiye_tha/views/login_view.dart';
+import 'package:likh_lena_chahiye_tha/views/register_view.dart';
+import 'package:likh_lena_chahiye_tha/views/verify_email_view.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,6 +16,10 @@ void main() {
       useMaterial3: true,
     ),
     home: const HomePage(),
+    routes: {
+      '/login/':(context) => const LoginView(),
+      '/register/':(context) => const RegisterView(),
+    },
   ));
 }
 
@@ -22,11 +28,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Home Page"),
-      ),
-      body: FutureBuilder(
+    return FutureBuilder(
         future: Firebase.initializeApp(
           options: DefaultFirebaseOptions.currentPlatform,
         ), 
@@ -34,29 +36,24 @@ class HomePage extends StatelessWidget {
           switch (snapshot.connectionState) {
             case ConnectionState.done:
               final user = FirebaseAuth.instance.currentUser;
-              if (user?.emailVerified ?? false) {
+              if (user != null) {
+                if (user.emailVerified) {
+                  print("email is verified");
+                } else {
+                  return const VerifyEmailView();
+                }
               } else {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const VerifyEmailView()));
+                return const LoginView();
               }
-              return const Text("Done");
+              return const Scaffold(
+                body: Center(child: Text("Done"),),
+              );
             default:
-              return const Text("Loading");
+              return const CircularProgressIndicator();
           }
-        },),
-    );
+        },
+      );
   }
 }
 
-class VerifyEmailView extends StatefulWidget {
-  const VerifyEmailView({super.key});
 
-  @override
-  State<VerifyEmailView> createState() => _VerifyEmailViewState();
-}
-
-class _VerifyEmailViewState extends State<VerifyEmailView> {
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}
