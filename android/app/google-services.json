@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "691956030142",
+    "project_id": "likh-lena-chahiye-tha",
+    "storage_bucket": "likh-lena-chahiye-tha.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:691956030142:android:ed14b3ab03baaad2491cef",
+        "android_client_info": {
+          "package_name": "com.youneedthis.likh_lena_chahiye_tha"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMD8UeJfqHzCQz0CG0Fqy8l0JBYBxBJRQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
