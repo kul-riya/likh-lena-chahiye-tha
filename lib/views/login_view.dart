@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:developer';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -9,7 +10,6 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-
   late final TextEditingController _email;
   late final TextEditingController _password;
 
@@ -51,32 +51,31 @@ class _LoginViewState extends State<LoginView> {
               hintText: "Enter your password here",
             ),
           ),
-            TextButton(
+          TextButton(
             onPressed: () async {
               final email = _email.text;
               final password = _password.text;
               try {
-                final userCredential = 
                 await FirebaseAuth.instance.signInWithEmailAndPassword(
-                email: email, 
-                password: password);
-                print(userCredential);
+                    email: email, password: password);
+                Navigator.of(context)
+                    .pushNamedAndRemoveUntil('/notes/', (route) => false);
               } on FirebaseAuthException catch (e) {
                 if (e.code == 'user-not-found') {
-                  print("User not Found");
+                  log("User not Found");
                 } else if (e.code == 'wrong-password') {
-                  print("Wrong password");
+                  log("Wrong password");
                 }
-              } 
-              
+              }
             },
             child: const Text('Login'),
           ),
           TextButton(
-            onPressed: () {
-              Navigator.of(context).pushNamedAndRemoveUntil('/register/', (route) => false);
-            }, 
-            child: const Text("Not registered yet? Register here!"))
+              onPressed: () {
+                Navigator.of(context)
+                    .pushNamedAndRemoveUntil('/register/', (route) => false);
+              },
+              child: const Text("Not registered yet? Register here!"))
         ],
       ),
     );
