@@ -1,8 +1,9 @@
-import 'dart:developer';
+// import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:likh_lena_chahiye_tha/constants/routes.dart';
+import 'package:likh_lena_chahiye_tha/utilities/show_error_dialog.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -60,28 +61,40 @@ class _RegisterViewState extends State<RegisterView> {
               final email = _email.text;
               final password = _password.text;
               try {
-                final userCredential = await FirebaseAuth.instance
-                    .createUserWithEmailAndPassword(
-                        email: email, password: password);
-                log(userCredential.toString());
+                await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                    email: email, password: password);
+                final user = FirebaseAuth.instance.currentUser;
+                await user?.sendEmailVerification();
+                Navigator.of(context).pushNamed(verifyEmailRoute);
               } on FirebaseAuthException catch (e) {
-                if (e.code == 'weak-password') {
-                  log("Weak password");
-                } else if (e.code == 'email-already-in-use') {
-                  log('Email is already in use');
-                } else if (e.code == 'invalid-email') {
-                  log("Invalid email");
+                if (!context.mounted) {
+                  return;
                 }
+                if (e.code == 'weak-password') {
+                  await showErrorDialog(context, "Weak password");
+                } else if (e.code == 'email-already-in-use') {
+                  await showErrorDialog(context, 'Email is already in use');
+                } else if (e.code == 'invalid-email') {
+                  await showErrorDialog(context, "Invalid email");
+                } else {
+                  await showErrorDialog(context, "Error: ${e.code}");
+                }
+              } catch (e) {
+                if (!context.mounted) {
+                  return;
+                }
+                await showErrorDialog(context, e.toString());
               }
             },
             child: const Text('Register'),
           ),
           TextButton(
-              onPressed: () {
-                Navigator.of(context)
-                    .pushNamedAndRemoveUntil(loginRoute, (route) => false);
-              },
-              child: const Text("Go to login view"))
+            onPressed: () {
+              Navigator.of(context)
+                  .pushNamedAndRemoveUntil(loginRoute, (route) => false);
+            },
+            child: const Text("Go to login view"),
+          ),
         ],
       ),
     );
