@@ -1,3 +1,5 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:likh_lena_chahiye_tha/firebase_options.dart';
 import 'package:likh_lena_chahiye_tha/services/auth/auth_user.dart';
 import 'package:likh_lena_chahiye_tha/services/auth/auth_provider.dart';
 import 'package:likh_lena_chahiye_tha/services/auth/auth_exceptions.dart';
@@ -84,5 +86,12 @@ class FirebaseAuthProvider implements AuthProvider {
     if (user != null) {
       await user.sendEmailVerification();
     }
+  }
+
+  @override
+  Future<void> initialize() async {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
   }
 }
