@@ -60,7 +60,8 @@ class _LoginViewState extends State<LoginView> {
               final email = _email.text;
               final password = _password.text;
               try {
-                AuthService.firebase().logIn(email: email, password: password);
+                await AuthService.firebase()
+                    .logIn(email: email, password: password);
                 final user = AuthService.firebase().currentUser;
                 if (user?.isEmailVerified ?? false) {
                   Navigator.of(context)
@@ -70,8 +71,8 @@ class _LoginViewState extends State<LoginView> {
                       verifyEmailRoute, (route) => false);
                 }
                 // ignore: use_build_context_synchronously
-                Navigator.of(context)
-                    .pushNamedAndRemoveUntil(notesRoute, (route) => false);
+                // Navigator.of(context)
+                //     .pushNamedAndRemoveUntil(notesRoute, (route) => false);
               } on UserNotFoundAuthException {
                 await showErrorDialog(context, 'User not found');
               } on WrongPasswordAuthException {
