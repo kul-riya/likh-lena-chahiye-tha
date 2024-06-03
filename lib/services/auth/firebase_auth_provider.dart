@@ -47,7 +47,9 @@ class FirebaseAuthProvider implements AuthProvider {
 
   @override
   Future<AuthUser> logIn(
-      {required String email, required String password}) async {
+      // returns auth user
+      {required String email,
+      required String password}) async {
     try {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);

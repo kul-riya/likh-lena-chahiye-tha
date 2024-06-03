@@ -28,12 +28,13 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
               },
               child: const Text("Send email verification")),
           TextButton(
-              onPressed: () async {
-                await AuthService.firebase().logOut();
-                Navigator.of(context)
-                    .pushNamedAndRemoveUntil(registerRoute, (route) => false);
-              },
-              child: const Text("Register"))
+            onPressed: () async {
+              await AuthService.firebase().logOut();
+              Navigator.of(context)
+                  .pushNamedAndRemoveUntil(registerRoute, (route) => false);
+            },
+            child: const Text("Register"),
+          )
         ],
       ),
     );
