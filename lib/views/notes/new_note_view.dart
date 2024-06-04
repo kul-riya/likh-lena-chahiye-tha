@@ -26,9 +26,11 @@ class _NewNoteViewState extends State<NewNoteView> {
     if (note == null) {
       return;
     }
-
     final text = _textController.text;
-    await _notesService.updateNotes(note: note, text: text);
+    await _notesService.updateNote(
+      note: note,
+      text: text,
+    );
   }
 
   void _setupTextControllerListener() {
@@ -57,9 +59,11 @@ class _NewNoteViewState extends State<NewNoteView> {
   void _saveNoteIfTextNotEmpty() async {
     final note = _note;
     final text = _textController.text;
-
     if (note != null && text.isNotEmpty) {
-      await _notesService.updateNotes(note: note, text: text);
+      await _notesService.updateNote(
+        note: note,
+        text: text,
+      );
     }
   }
 
@@ -75,27 +79,28 @@ class _NewNoteViewState extends State<NewNoteView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("New Note"),
+        title: const Text('New Note'),
       ),
       body: FutureBuilder(
-          future: createNewNote(),
-          builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.done:
-                // ignore: unnecessary_cast
-                _note = snapshot.data as DatabaseNote?;
-                _setupTextControllerListener();
-                return TextField(
-                  controller: _textController,
-                  keyboardType: TextInputType.multiline,
-                  maxLines: null,
-                  decoration: const InputDecoration(
-                      hintText: 'Start Typing your note...'),
-                );
-              default:
-                return const CircularProgressIndicator();
-            }
-          }),
+        future: createNewNote(),
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.done:
+              _note = snapshot.data as DatabaseNote;
+              _setupTextControllerListener();
+              return TextField(
+                controller: _textController,
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
+                decoration: const InputDecoration(
+                  hintText: 'Start typing your note...',
+                ),
+              );
+            default:
+              return const CircularProgressIndicator();
+          }
+        },
+      ),
     );
   }
 }
