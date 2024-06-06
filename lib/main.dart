@@ -11,6 +11,7 @@ import 'package:likh_lena_chahiye_tha/services/auth/bloc/auth_bloc.dart';
 import 'package:likh_lena_chahiye_tha/services/auth/bloc/auth_event.dart';
 import 'package:likh_lena_chahiye_tha/services/auth/bloc/auth_state.dart';
 import 'package:likh_lena_chahiye_tha/services/auth/firebase_auth_provider.dart';
+import 'package:likh_lena_chahiye_tha/views/forgot_password_view.dart';
 import 'package:likh_lena_chahiye_tha/views/login_view.dart';
 import 'package:likh_lena_chahiye_tha/views/notes/create_update_note_view.dart';
 import 'package:likh_lena_chahiye_tha/views/notes/notes_view.dart';
@@ -63,6 +64,8 @@ class HomePage extends StatelessWidget {
           return const LoginView();
         } else if (state is AuthStateRegistering) {
           return const RegisterView();
+        } else if (state is AuthStateForgotPassword) {
+          return const ForgotPasswordView();
         } else {
           return const Scaffold(
             body: CircularProgressIndicator(),
