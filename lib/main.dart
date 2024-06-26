@@ -68,7 +68,7 @@ class HomePage extends StatelessWidget {
           return const ForgotPasswordView();
         } else {
           return const Scaffold(
-            body: CircularProgressIndicator(),
+            body: Center(child: CircularProgressIndicator()),
           );
         }
       },
